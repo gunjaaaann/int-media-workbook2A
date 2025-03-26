@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- add in CDN for three.js library -->
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@<version>/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@<version>/examples/jsm/"
+          }
+        }
+        </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G's bedroom</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        body {
+            margin: 0; 
+            overflow: hidden;
+        }
+
+        canvas {display: block;}
+
+
+    </style>
+
+</head>
+
+<body>
+    <canvas class="threejs"></canvas>
+    <script>
+
+        //Initialise the scene
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0000);
+
+        //Define material colours
+        const woodMaterial = new THREE.MeshStandardMaterial({color: 0xd4904c});
+        const mattressMaterial = new THREE.MeshStandardMaterial({color: 0xffffff});
+        const beddingMaterial = new THREE.MeshStandardMaterial({color: 0x140ac9});
+        const windowMaterial = new THREE.MeshStandardMaterial({color: 0xa2cefa});
+        const windowFrameMaterial = new THREE.MeshStandardMaterial({color: 0x2b2b2b});
+        const wallMaterial = new THREE.MeshStandardMaterial({color: 0xffffff});
+
+        //Add lights
+        const directionalLight = new THREE.DirectionalLight(0xf2e7d8, 1.8);
+        directionalLight.position.set(7, 7, 6);
+        scene.add(directionalLight);
+
+ 
+
+        //Add objects
+        //BED
+        //Mattress
+        const mattress = new THREE.Mesh(new THREE.BoxGeometry(4, 0.5, 7), mattressMaterial);
+        mattress.position.y = 1.5;
+        scene.add(mattress);
+
+        const headboard = new THREE.Mesh(new THREE.BoxGeometry(4.5, 1.5, 0.2), woodMaterial);
+        headboard.position.set(0, 2, -3.6);
+        scene.add(headboard);
+
+        const bedframeBelow = new THREE.Mesh(new THREE.BoxGeometry(4.5, 0.2, 7.5), woodMaterial);
+        bedframeBelow.position.set(0, 1.2, 0.05);
+        scene.add(bedframeBelow);
+
+        const bedLegBack = new THREE.Mesh(new THREE.BoxGeometry(4.5, 1, 0.2), woodMaterial);
+        bedLegBack.position.set(0, 0.8, -3.6);
+        scene.add(bedLegBack);
+
+        const bedLegFront = new THREE.Mesh(new THREE.BoxGeometry(4.5, 1, 0.2), woodMaterial);
+        bedLegFront.position.set(0, 0.8, 3.7);
+        scene.add(bedLegFront);
+
+        //Pillows
+        const pillow1 = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.2, 1), beddingMaterial);
+        pillow1.position.set(-1, 1.85, -3);
+        scene.add(pillow1);
+
+        const pillow2 = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.2, 1), beddingMaterial);
+        pillow2.position.set(1, 1.85, -3);
+        scene.add(pillow2);
+
+        //Create the bedding
+        const bedding = new THREE.Mesh(new THREE.BoxGeometry(4, 0.2, 5), beddingMaterial);
+        bedding.position.set(0, 1.85, 1);
+        scene.add(bedding);
+
+
+
+        //FLOOR
+        const floor = new THREE.Mesh(new THREE.PlaneGeometry(10, 10), new THREE.MeshStandardMaterial({color: 0xb5ab9c}));
+        floor.rotation.x = -Math.PI / 2;
+        scene.add(floor);
+
+        //SIDE TABLE
+        const sideTableTop = new THREE.Mesh(new THREE.BoxGeometry(2, 0.2, 1.5), woodMaterial);
+        sideTableTop.position.set(3.5, 1.5, -2.95);
+        scene.add(sideTableTop);
+
+        const sideTableMiddle = new THREE.Mesh(new THREE.BoxGeometry(2, 0.2, 1.5), woodMaterial);
+        sideTableMiddle.position.set(3.5, 1, -2.95);
+        scene.add(sideTableMiddle);
+
+        const sideTableLeft = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1.3, 1.5), woodMaterial);
+        sideTableLeft.position.set(2.6, 0.95, -2.95);
+        scene.add(sideTableLeft);
+
+        const sideTableRight = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1.3, 1.5), woodMaterial);
+        sideTableRight.position.set(4.4, 0.95, -2.95);
+        scene.add(sideTableRight);
+
+
+
+        //WINDOWS
+        const window1 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 9, 4.8), windowMaterial);
+        window1.position.set(-5, 4.5, -2.6);
+        scene.add(window1);
+
+        const window2 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 9, 4.8), windowMaterial);
+        window2.position.set(-5, 4.5, 2.6);
+        scene.add(window2);
+
+        const windowFrame = new THREE.Mesh(new THREE.BoxGeometry(0.2, 9.5, 10.1), windowFrameMaterial);
+        windowFrame.position.set(-5.2, 4.7, 0);
+        scene.add(windowFrame);
+
+        //WALL
+        const wall = new THREE.Mesh(new THREE.BoxGeometry(10, 9.5, 0.2), wallMaterial);
+        wall.position.set(0, 4.6, -5.1);
+        scene.add(wall);
+
+        //Posters on the wall
+        const poster1 = new THREE.Mesh(new THREE.BoxGeometry(1.5, 1, 0.2), new THREE.MeshStandardMaterial({color: 0xe06bed}));
+        poster1.position.set(-2, 4.6, -4.9);
+        scene.add(poster1);
+
+        const poster2 = new THREE.Mesh(new THREE.BoxGeometry(2, 3, 0.2), new THREE.MeshStandardMaterial({color: 0x599cff}));
+        poster2.position.set(0, 5, -4.9);
+        scene.add(poster2);
+
+        const poster3 = new THREE.Mesh(new THREE.BoxGeometry(1.5, 1.5, 0.2), new THREE.MeshStandardMaterial({color: 0x195e19}));
+        poster3.position.set(2, 5, -4.9);
+        scene.add(poster3);
+
+
+
+        //Camera
+        const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 200);
+        camera.position.set(0, 3, 5);
+
+
+        //Renderer
+        const canvas = document.querySelector('canvas.threejs');
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+
+        //OrbitControls
+        const controls = new THREE.OrbitControls(camera, canvas);
+        controls.enableDamping = true;
+
+
+        //Resize handling
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        
+        // Render loop
+        function animate() {
+            controls.update();
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Raycasting for click detection
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        function onObjectClick(event) {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(scene.children, false);
+
+            if (intersects.length > 0) {
+                const clickedObject = intersects[0].object;
+                if (clickedObject === pillow1) {
+                    window.location.href = 'workshop1.html';
+                    
+                } else if (clickedObject === pillow2) {
+                    window.location.href = 'workshop2.html';
+                }
+                else if (clickedObject == bedding) {
+                    window.location.href = 'workshop3.html'
+                }
+                else if (clickedObject == poster2) {
+                    window.location.href = 'easter_egg1.html'
+                }
+            }
+        }
+
+        window.addEventListener('click', onObjectClick);
+    </script>
+</body>
